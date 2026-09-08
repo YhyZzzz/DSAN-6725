@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+
+      - name: Sync dependencies
+        run: uv sync
+
+      - name: Lint
+        run: uv run ruff check .
+
+      # Test suites for modules the student has not created yet are skipped, so
+      # the starter repo is green. Creating src/pipeline/clean.py or
+      # transform.py automatically brings its test suite into CI -- red until
+      # the implementation passes. Graders separately verify the files exist.
+      - name: Test (fixture data only, no downloads)
+        run: |
+          ARGS="tests/test_ingest.py"
+          if [ -f src/pipeline/clean.py ]; then ARGS="$ARGS tests/test_clean.py"; fi
+          if [ -f src/pipeline/transform.py ]; then ARGS="$ARGS tests/test_transform.py"; fi
+          echo "Running: uv run pytest -v $ARGS"
+          uv run pytest -v $ARGS

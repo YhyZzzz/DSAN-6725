@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Virtual environments
+.env
+.venv
+venv/
+
+# Testing and linting caches
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+.coverage
+
+# Downloaded data (fixtures ARE committed; raw data is not)
+data/raw/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+
+# Project
+.scratchpad/
+logs/
+
